@@ -1,19 +1,18 @@
 package main
 
-import "github.com/josafa-dieb/knn/modules"
+import (
+	"fmt"
+
+	"github.com/josafa-dieb/knn/modules"
+	"github.com/josafa-dieb/knn/utils"
+)
 
 func main() {
 
-	dados_treino := [][]float64{
-		{10, 10, 1},
-		{10, 30, 1},
-		{15, 25, 1},
-		{20, 15, 1},
-		{30, 30, 2},
-		{35, 25, 2},
-		{40, 15, 2},
-		{40, 40, 2}}
-	novo_exemplo := []float64{30, 20}
+	data := utils.Load_dataset_file("./dataset/Iris.csv")
+	dados_treino := utils.Load_data_to_training(data)
+	novo_exemplo := []float64{4.6, 3.6, 1, 0.2}
 
-	modules.KNearestNeighbors(novo_exemplo, dados_treino, 3)
+	value := modules.KNearestNeighbors(novo_exemplo, dados_treino, 3)
+	fmt.Println(value)
 }
