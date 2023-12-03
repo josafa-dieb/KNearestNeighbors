@@ -1,7 +1,6 @@
 package modules
 
 import (
-	"fmt"
 	"sort"
 )
 
@@ -10,7 +9,7 @@ type KeyValue struct {
 	Value float64
 }
 
-func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, k int32) {
+func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, k int32) int {
 
 	// calcular as distâncias
 	distancias := make(map[int]float64, 0)
@@ -18,16 +17,37 @@ func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, k int32
 		distancias[i] = Dist(novo_exemplo, dados_treino[i])
 	}
 	// ordenar as distancias
-	vizinhos := make([]KeyValue, 0, len(distancias))
+	distancia_ordenada := make([]KeyValue, 0, len(distancias))
 	for k, v := range distancias {
-		vizinhos = append(vizinhos, KeyValue{k, v})
+		distancia_ordenada = append(distancia_ordenada, KeyValue{k, v})
 	}
-	sort.SliceStable(vizinhos, func(i, j int) bool {
-		return vizinhos[i].Value < vizinhos[j].Value
+	sort.SliceStable(distancia_ordenada, func(i, j int) bool {
+		return distancia_ordenada[i].Value < distancia_ordenada[j].Value
 	})
 
+	vizinhos := make([]KeyValue, 0)
+	for i := 0; i < int(k); i++ {
+		vizinhos = append(vizinhos, distancia_ordenada[i])
+	}
 	classe := make(map[int]int, 0)
 	classe[1] = 0
 	classe[2] = 0
-	fmt.Println(vizinhos)
+
+	for i := 0; i < len(vizinhos); i++ {
+		indice := vizinhos[i].Key
+		classe_vizinha := int(dados_treino[indice][len(dados_treino[indice])-1])
+		classe[classe_vizinha]++
+	}
+
+	var result int
+	var max_count int
+
+	for class_type, count := range classe {
+		if count > max_count {
+			result = class_type
+			max_count = count
+		}
+	}
+
+	return result
 }
