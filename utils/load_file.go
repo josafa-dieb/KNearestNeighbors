@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/csv"
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
 )
@@ -13,15 +14,15 @@ type Flower struct {
 	sepal_width  float64
 	petal_length float64
 	petal_width  float64
-	specie       string
+	Specie       string
 }
 
-func Load_dataset_file(dir string) []Flower {
+func Load_dataset_file(dir string) ([]Flower, []Flower) {
 	file, err := os.Open(dir)
 
 	if err != nil {
 		fmt.Println("Erro ao tentar carregar o arquivo.", err)
-		return nil
+		return nil, nil
 	}
 
 	defer file.Close()
@@ -32,13 +33,19 @@ func Load_dataset_file(dir string) []Flower {
 
 	if err != nil {
 		fmt.Println("Erro ao ler as linhas do arquivo.", err)
-		return nil
+		return nil, nil
 	}
 
-	flowers := make([]Flower, 0)
+	flowers_to_training := make([]Flower, 0)
+	flowers_to_test := make([]Flower, 0)
+	size := len(lines)
+	size_to_traning := int(0.8 * float32(size))
+	//size_to_test := size - size_to_traning
 
-	for i := 1; i < len(lines); i++ {
-		row := lines[i]
+	count := 0
+	for {
+		random_index := rand.Intn(len(lines))
+		row := lines[random_index]
 		id, _ := strconv.Atoi(row[0])
 		sepal_length, _ := strconv.ParseFloat(row[1], 64)
 		sepal_width, _ := strconv.ParseFloat(row[2], 64)
@@ -48,10 +55,28 @@ func Load_dataset_file(dir string) []Flower {
 
 		flower := Flower{id, sepal_length, sepal_width, petal_length, petal_width, specie}
 
-		flowers = append(flowers, flower)
+		flowers_to_training = append(flowers_to_training, flower)
 
+		// remover o elemento
+		lines = append(lines[:random_index], lines[random_index+1:]...)
+
+		count++
+		if count == size_to_traning {
+			break
+		}
 	}
-	return flowers
+	for _, value := range lines {
+		id, _ := strconv.Atoi(value[0])
+		sepal_length, _ := strconv.ParseFloat(value[1], 64)
+		sepal_width, _ := strconv.ParseFloat(value[2], 64)
+		petal_length, _ := strconv.ParseFloat(value[3], 64)
+		petal_width, _ := strconv.ParseFloat(value[4], 64)
+		specie := value[5]
+		flower := Flower{id, sepal_length, sepal_width, petal_length, petal_width, specie}
+		flowers_to_test = append(flowers_to_test, flower)
+	}
+
+	return flowers_to_training, flowers_to_test
 }
 
 func Load_data_to_training(values []Flower) [][]float64 {
@@ -60,17 +85,40 @@ func Load_data_to_training(values []Flower) [][]float64 {
 
 	for _, flower := range values {
 		var flower_type int
-		switch flower.specie {
+		switch flower.Specie {
 		case "Iris-setosa":
 			flower_type = 1
+			break
 		case "Iris-versicolor":
 			flower_type = 2
+			break
 		case "Iris-virginica":
 			flower_type = 3
+			break
 		}
 		values := []float64{flower.sepal_length, flower.sepal_width, flower.petal_length, flower.petal_width, float64(flower_type)}
 		float_values = append(float_values, values)
 	}
+	return float_values
+
+}
+func Load_data_to_test(flower Flower) []float64 {
+
+	float_values := make([]float64, 0)
+
+	var flower_type int
+	switch flower.Specie {
+	case "Iris-setosa":
+		flower_type = 1
+		break
+	case "Iris-versicolor":
+		flower_type = 2
+		break
+	case "Iris-virginica":
+		flower_type = 3
+		break
+	}
+	float_values = append(float_values, flower.sepal_length, flower.sepal_width, flower.petal_length, flower.petal_width, float64(flower_type))
 	return float_values
 
 }

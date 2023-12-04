@@ -2,6 +2,8 @@ package modules
 
 import (
 	"sort"
+
+	"github.com/josafa-dieb/knn/utils"
 )
 
 type KeyValue struct {
@@ -9,7 +11,7 @@ type KeyValue struct {
 	Value float64
 }
 
-func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, k int32) int {
+func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, metrics *utils.Metrics, k int32) int {
 
 	// calcular as distâncias
 	distancias := make(map[int]float64, 0)
@@ -25,18 +27,18 @@ func KNearestNeighbors(novo_exemplo []float64, dados_treino [][]float64, k int32
 		return distancia_ordenada[i].Value < distancia_ordenada[j].Value
 	})
 
+	// fmt.Println(distancia_ordenada)
 	vizinhos := make([]KeyValue, 0)
 	for i := 0; i < int(k); i++ {
 		vizinhos = append(vizinhos, distancia_ordenada[i])
 	}
 	classe := make(map[int]int, 0)
-	classe[1] = 0
-	classe[2] = 0
 
 	for i := 0; i < len(vizinhos); i++ {
 		indice := vizinhos[i].Key
 		classe_vizinha := int(dados_treino[indice][len(dados_treino[indice])-1])
 		classe[classe_vizinha]++
+		metrics.Predictions += 1
 	}
 
 	var result int

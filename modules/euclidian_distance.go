@@ -1,11 +1,13 @@
 package modules
 
-import "math"
+import (
+	"math"
+)
 
 func Dist(a []float64, b []float64) float64 {
 	d := 0.0
 	i := 0
-	for i < len(a) {
+	for i < len(a)-1 {
 		d += math.Pow((a[i] - b[i]), 2)
 		i++
 	}
