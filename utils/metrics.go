@@ -4,9 +4,8 @@ type Metrics struct {
 	Predictions         int
 	Correct_predictions int
 	Precision           float64
-	Trust_factor        int
-	True_positive       int
-	True_negative       int
-	False_positive      int
-	False_negative      int
+	True_positive       float64
+	True_negative       float64
+	False_positive      float64
+	False_negative      float64
 }

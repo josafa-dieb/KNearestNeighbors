@@ -9,11 +9,11 @@ import (
 )
 
 type Flower struct {
-	id           int
-	sepal_length float64
-	sepal_width  float64
-	petal_length float64
-	petal_width  float64
+	Id           int
+	Sepal_length float64
+	Sepal_width  float64
+	Petal_length float64
+	Petal_width  float64
 	Specie       string
 }
 
@@ -96,7 +96,7 @@ func Load_data_to_training(values []Flower) [][]float64 {
 			flower_type = 3
 			break
 		}
-		values := []float64{flower.sepal_length, flower.sepal_width, flower.petal_length, flower.petal_width, float64(flower_type)}
+		values := []float64{flower.Sepal_length, flower.Sepal_width, flower.Petal_length, flower.Petal_width, float64(flower_type)}
 		float_values = append(float_values, values)
 	}
 	return float_values
@@ -118,7 +118,7 @@ func Load_data_to_test(flower Flower) []float64 {
 		flower_type = 3
 		break
 	}
-	float_values = append(float_values, flower.sepal_length, flower.sepal_width, flower.petal_length, flower.petal_width, float64(flower_type))
+	float_values = append(float_values, flower.Sepal_length, flower.Sepal_width, flower.Petal_length, flower.Petal_width, float64(flower_type))
 	return float_values
 
 }

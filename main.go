@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/josafa-dieb/knn/modules"
 	"github.com/josafa-dieb/knn/utils"
@@ -17,6 +18,24 @@ func main() {
 
 	var metrics utils.Metrics
 	training, test := utils.Load_dataset_file("./dataset/Iris.csv")
+	file_trained, err := os.OpenFile("./result/treinamento.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+
+	if err != nil {
+		fmt.Println("Erro ao tentar carregar o arquivo.", err)
+	}
+	for _, row := range training {
+		fmt.Fprintf(file_trained, "%d,%.2f,%.2f,%.2f,%.2f,%s\n", row.Id, row.Sepal_length, row.Sepal_width, row.Petal_length, row.Petal_width, row.Specie)
+	}
+
+	file_tested, err := os.OpenFile("./result/testes.csv", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
+
+	if err != nil {
+		fmt.Println("Erro ao tentar carregar o arquivo.", err)
+	}
+	for _, row := range test {
+		fmt.Fprintf(file_tested, "%d,%.2f,%.2f,%.2f,%.2f,%s\n", row.Id, row.Sepal_length, row.Sepal_width, row.Petal_length, row.Petal_width, row.Specie)
+	}
+
 	data_to_training := utils.Load_data_to_training(training)
 	for i := 0; i < len(test); i++ {
 		var flower utils.Flower
@@ -42,7 +61,7 @@ func main() {
 
 	}
 
-	accuracy := float64((metrics.True_positive + metrics.True_negative) / len(test))
+	accuracy := (metrics.True_positive + metrics.True_negative) / float64(len(test))
 
 	precision := func() float64 {
 		if (metrics.True_positive + metrics.False_positive) != 0 {
@@ -60,10 +79,10 @@ func main() {
 		}
 	}()
 
-	fmt.Printf("Acurácia: %f", accuracy)
+	fmt.Printf("Acurácia: %.2f", accuracy)
 	fmt.Println()
-	fmt.Printf("Precisão: %f", precision)
+	fmt.Printf("Precisão: %.2f", precision)
 	fmt.Println()
-	fmt.Printf("Recall do algorítmo: %f", recall)
+	fmt.Printf("Recall do algorítmo: %.2f", recall)
 	fmt.Println()
 }
