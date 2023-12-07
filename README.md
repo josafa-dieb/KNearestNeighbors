@@ -30,8 +30,5 @@ a base de dados dos valores das flores é composto por 3 (Íris-setosa, Íris-vi
 ### Seleção Treinamento (80%)
 ![Contagem de Species](https://github.com/josafa-dieb/KNearestNeighbors/assets/49986895/68aace99-7f68-4e49-9c1f-697ab66dc101)
 
-### Treinamento: Comprimento Sépalas
-![Comprimento Sépala](https://github.com/josafa-dieb/KNearestNeighbors/assets/49986895/7ab6843a-3898-4226-8c46-854a56595b2e)
-
-### Treinamento: Largura Sépalas
-![Largura Sépala](https://github.com/josafa-dieb/KNearestNeighbors/assets/49986895/5ec24e62-6a6b-4471-b296-b16cf453a492)
+### Seleção Testes (20%)
+![Contagem Testes](https://github.com/josafa-dieb/KNearestNeighbors/assets/49986895/df088006-3b4e-4bad-942e-8e1607959481)
