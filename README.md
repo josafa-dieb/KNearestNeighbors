@@ -21,8 +21,8 @@
 ### Dataset
 
  - [Dataset Iris.csv](https://github.com/josafa-dieb/KNearestNeighbors/blob/main/dataset/Iris.csv)
- - [Resultado: dados de treinamento](https://github.com/josafa-dieb/KNearestNeighbors/blob/main/dataset/Iris.csv)
- - [Resultado: dados de testes](https://github.com/josafa-dieb/KNearestNeighbors/blob/main/dataset/Iris.csv)
+ - [Resultado: dados de treinamento](https://github.com/josafa-dieb/KNearestNeighbors/tree/main/result)
+ - [Resultado: dados de testes](https://github.com/josafa-dieb/KNearestNeighbors/tree/main/result)
  
 
 ### Dataset Iris
